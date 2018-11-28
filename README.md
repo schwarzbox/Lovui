@@ -12,7 +12,7 @@ Import module.
 local ui = require('lovui')
 ```
 
-Hello World.
+"Hello World!".
 
 ``` lua
 local ui = require('lovui')
@@ -23,17 +23,12 @@ function love.load()
     ui.init()
     ui.Manager.clear()
     local lab = ui.Label{x=MIDWID, y=MIDHEI,anchor='s', text='Hello World!'}
-    ui.Button{x=MIDWID, y=MIDHEI, anchor='n', text='Click',
+    ui.Button{x=MIDWID, y=MIDHEI, anchor='n', text=' OK ',
                 com=function(self) lab.text=self.text end}
 end
 
-function love.update(dt)
-    ui.Manager.update(dt)
-end
-
-function love.draw()
-    ui.Manager.draw()
-end
+function love.update(dt) ui.Manager.update(dt) end
+function love.draw() ui.Manager.draw() end
 
 -- lovui need all this functions
 function love.textinput(t) end
@@ -49,16 +44,15 @@ Example with ui.HBox ui.VBox and ui.Sep.
 
 ``` lua
 local ui = require('lovui')
-local MIDWID = love.graphics.getWidth() / 2
-local MIDHEI = love.graphics.getHeight() / 2
 -- variables for UI elements
 local countUI = {val=' '}
-local countFPS ={val=' '}
+local countFPS = {val=' '}
 function love.load()
     ui.init()
     ui.Manager.clear()
 
-    local menu = ui.VBox{x=MIDWID, y=MIDHEI,frm=8,mode='fill'}
+    local menu = ui.VBox{x=love.graphics.getWidth() / 2,
+                        y=love.graphics.getHeight() / 2,frm=8,mode='fill'}
     local left = ui.HBox()
     local right = ui.HBox()
     left:add(ui.Label{text='UI  '},ui.Sep(),ui.Label{text='000',var=countUI})
@@ -74,9 +68,7 @@ function love.update(dt)
     ui.Manager.update(dt)
 end
 
-function love.draw()
-    ui.Manager.draw()
-end
+function love.draw() ui.Manager.draw() end
 
 function love.textinput(t) end
 function love.keypressed(key,unicode,isrepeat)end
@@ -122,19 +114,19 @@ ui.HBox - horizontal container for group of UI elements, default transparent.
 
 ui.VBox - vertical container for group of UI elements, default transparent.
 
-ui.Sep - small dot without HBox and VBox. When add ui.Sep to ui.HBox or ui.VBox, ui.Sep become vertical or horizontal line.
+ui.Sep - small dot without HBox and VBox. When add ui.Sep to ui.HBox or ui.VBox, ui.Sep become horizontal/vertical line.
 
 ui.PopUp - vertical pop-up container for group of UI elements.
 
-ui.Label - simple text element, default transparent bg and not frame.
+ui.Label - simple text element, default transparent background without frame.
 
 ui.Input - element for input ASCII-only text.
 
-ui.ChackBox - true/false element.
+ui.CheckBox - true/false element.
 
 ui.LabelExe - show label and run given function before disappear.
 
-ui.Button - press button and run given function.
+ui.Button - press to run given function.
 
 ui.Selector - aka 'radiobutton'.
 
