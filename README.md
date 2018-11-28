@@ -2,6 +2,8 @@
 
 UI elements for Love2d. ASCII-only.
 
+![Screenshot](screenshot/screenshot1.png)
+
 Copy lovui.lua to the project folder.
 
 Import module.
@@ -43,7 +45,7 @@ function love.mousemoved(x,y,dx,dy,istouch) end
 function love.wheelmoved(x, y) end
 ```
 
-Using ui.HBox, ui.VBox and ui.Sep.
+Example with ui.HBox ui.VBox and ui.Sep.
 
 ``` lua
 local ui = require('lovui')
@@ -85,39 +87,65 @@ function love.mousemoved(x,y,dx,dy,istouch) end
 function love.wheelmoved(x, y) end
 ```
 
-# Init
+Look at advanced examples in main.lua.
+
+To run example: clone repository, download & install [LÖVE 11.1](https://love2d.org) for you system and run main.lua.
+
+
+# ui.init()
 
 ui.init() - connect lovui with love events system.
 
-# Manager
+# ui.Manager
 
 ui.items - hold all UI elements.
+
 ui.Manager.add() - don't add items by yourself.
+
 ui.Manager.clear() - remove all UI elements.
+
 ui.Manager.remove(item) - remove UI element.
-ui.Manager.len() - count all UI elements/
+
+ui.Manager.len() - count all UI elements
+
 ui.Manager.focus(bool) - set or remove focus for UI element.
+
 ui.Manager.draw()
+
 ui.Manager.update(dt)
 
 Usually your use ui.Manager.draw(), ui.Manager.update(dt) and ui.Manager.clear()
 
-# Tool Box
+# UI elements
 
 ui.HBox - horizontal container for group of UI elements, default transparent.
+
 ui.VBox - vertical container for group of UI elements, default transparent.
+
 ui.Sep - small dot without HBox and VBox. When add ui.Sep to ui.HBox or ui.VBox, ui.Sep become vertical or horizontal line.
+
 ui.PopUp - vertical pop-up container for group of UI elements.
+
 ui.Label - simple text element, default transparent bg and not frame.
+
 ui.Input - element for input ASCII-only text.
+
 ui.ChackBox - true/false element.
+
 ui.LabelExe - show label and run given function before disappear.
+
 ui.Button - press button and run given function.
+
 ui.Selector - aka 'radiobutton'.
+
 ui.Counter - two ui.Buttons and ui.Label to count from min to max with given step.
+
 ui.Slider - drag handle to change variable value.
+
 ui.ProgBar - show variable value with rectangle bar or with ASCII.
+
 ui.List - group of ui.Selectors with label.
+
 ui.FoldList - group of pop-up ui.Selectors with label.
 
 # Colors
@@ -129,6 +157,7 @@ For example, if you choose fntclr={1,1,1,1} for ui.Button you get white font and
 # External variables
 
 Provide custom variables for field 'var' when setup UI elements.
+
 ui.CheckBcox.
 ``` lua
 local checkBoxVar = {bool=false}
@@ -137,9 +166,4 @@ Other UI elements.
 ``` lua
 local selectorVar = {val='Selector1'}
 ```
-Look at advanced examples in main.lua.
-
-To run example: clone repository, download & install [LÖVE 11.1](https://love2d.org) for you system and run main.lua.
-
-![Screenshot](screenshot/screenshot1.png)
 
