@@ -2,6 +2,18 @@
 
 UI elements for Love2d. ASCII-only.
 
+v3.0
+
+- Add main color function
+
+- Highlight slider handle
+
+- Align (center left right top bottom)
+
+- Add self to List (use self in function calls)
+
+- Add unfold direction to FoldList
+
 ![Screenshot](screenshot/screenshot1.png)
 
 Copy lovui.lua to the project folder.
@@ -20,7 +32,7 @@ local MIDWID = love.graphics.getWidth() / 2
 local MIDHEI = love.graphics.getHeight() / 2
 function love.load()
     -- connect lovui with love events system
-    ui.init()
+    ui.load()
     ui.Manager.clear()
     local lab = ui.Label{x=MIDWID, y=MIDHEI,anchor='s', text='Hello World!'}
     ui.Button{x=MIDWID, y=MIDHEI, anchor='n', text=' OK ',
@@ -48,7 +60,7 @@ local ui = require('lovui')
 local countUI = {val=' '}
 local countFPS = {val=' '}
 function love.load()
-    ui.init()
+    ui.load()
     ui.Manager.clear()
 
     local menu = ui.VBox{x=love.graphics.getWidth() / 2,
@@ -84,9 +96,9 @@ Look at advanced examples in main.lua.
 To run example: clone repository, download & install [LÖVE 11.1](https://love2d.org) for you system and run main.lua.
 
 
-# ui.init()
+# ui.load()
 
-ui.init() - connect lovui with love events system.
+ui.load() - connect lovui with love events system.
 
 # ui.Manager
 
@@ -140,9 +152,13 @@ ui.List - group of ui.Selectors with label.
 
 ui.FoldList - group of pop-up ui.Selectors with label.
 
+# Images
+
+Use ImageData when provide images for UI elements.
+
 # Colors
 
-You can provide frame color (frmclr) and font color (fntclr) for UI elements. But for font highlight color (onclr) and frame highlight color (onfrm), lovui count automatically.
+You can provide frame color (frmclr) and font color (fntclr) for UI elements. But values for font highlight color (onclr) and frame highlight color (onfrm), lovui count automatically.
 
 For example, if you choose fntclr={1,1,1,1} for ui.Button you get white font and same highlight color, but if you choose fntclr={0.3,0.3,0.3,1}, ui.Button text become brighter when mouse collide with element.
 

@@ -12,7 +12,7 @@ local ui = require('lovui')
 io.stdout:setvbuf('no')
 local set = {
     APPNAME = 'UI',
-    VER = '2.5',
+    VER = '3.0',
     FULLSCR = false,
     WID = love.graphics.getWidth(),
     HEI = love.graphics.getHeight(),
@@ -70,10 +70,9 @@ local check = {bool=false}
 local drag = {bool=false}
 local inputvar = {val=''}
 local labelsel = {val='    Label    '}
-local listvar = {val=''}
 local progbar1 = {val=5}
 local progbar2 = {val=0}
-local cross = imageFromMatrix({{0,1,0}, {1,0,1}, {0,1,0}}, set.GRAY,8)
+local cross = imageFromMatrix({{0,1,0}, {1,0,1}, {0,1,0}}, set.WHITE,8)
 local crossvar = {val='1'}
 
 local function uiScreen()
@@ -86,7 +85,7 @@ local function uiScreen()
     ui.LabelExe{text='LabelExe',x=set.MIDWID,y=set.HEI-50,anchor='s',time=180,
                                                 image=cross,da=2}
 
-    local menu = ui.HBox{x=set.MIDWID, y=96,frm=10, drag=true}
+    local menu = ui.HBox{x=set.MIDWID, y=64,frm=10, drag=true}
     menu:add(ui.Label{text='Press Right Mouse Button for use PopUp element'})
 
     local main_menu = ui.HBox{x=set.MIDWID, y=set.MIDHEI,frm=8,mode='fill'}
@@ -125,19 +124,38 @@ local function uiScreen()
                   var=progbar2,max=4})
 
     local but=ui.Button{text='Show LabelExe',com=function()
-                    ui.LabelExe{x=set.MIDWID,y=8,text='UI',anchor='n'} end}
+                ui.LabelExe{x=set.MIDWID,y=8, hei=32, frm=1,
+                text='UI',anchor='n',align='bot'} end}
 
 
     local disp = ui.Label{text='Display'}
-    local list = ui.List{text='List',var=listvar,items={},mode='fill',
-                        com=function() disp:set({text=listvar.val}) end}
-    local flist = ui.FoldList{text='FoldList',items={' 1 ',' 2 ',' 3 '}}
+    local list = ui.List{text='List',var={val=''},items={},mode='fill',max=2,
+                        com=function(ls) disp:set({text=ls.var.val}) end}
+    local flist=ui.FoldList{text='FoldList',items={' 1 ',' 2 ',{' 3 ',cross}}}
+
+    local alignbox = ui.VBox()
+    local butbox = ui.HBox()
+    local align = ui.Label{text='align',frm=1,wid=128,hei=64,align='w'}
+    butbox:add(
+        ui.Button{text='left',
+            com=function() align:set({align='w'}) end},
+        align,
+        ui.Button{text='right',
+            com=function() align:set({align='e'}) end})
+    alignbox:add(
+        ui.Button{text='top',
+            com=function() align:set({align='n'}) end},
+        butbox,
+        ui.Button{text='bot',
+            com=function() align:set({align='s'}) end}
+        )
 
     menu_col1:add(list,ui.Sep(),disp,ui.Sep(),flist)
     menu_col2:add(menu_row1,menu_row2,menu_row3,menu_row4,menu_row5,
-                    ui.Sep(),but)
+                    ui.Sep(),but,ui.Sep(),alignbox)
 
     main_menu:add(menu_col1,menu_col2)
+
 
     local bottom_menu = ui.HBox{x=set.MIDWID, y=set.HEI-2,anchor='s',
                                 frm=8,mode='fill'}
@@ -151,6 +169,7 @@ local function uiScreen()
             ui.Button{text='Exit',
                 com=function() love.event.quit() end})
 
+
     local popup = ui.PopUp{text='PopUp'}
     popup:add(ui.CheckBox{text='Drag',var=drag,
                     com=function() main_menu:setDrag(drag.bool) end},
@@ -158,18 +177,21 @@ local function uiScreen()
                 ui.Selector{text='1',image=cross,var=crossvar},
                 ui.Selector{text='2',image=cross,var=crossvar},
                 ui.Sep(),
-                ui.Button{text='Exit',  frm=0,
+                ui.Button{text='Exit', frm=0,
                     com=function() love.event.quit() end})
 
-    popup:setFnt(set.GAMEFNT)
+    popup:setFnt({nil,18})
+    -- set color for all
+    ui.Manager.color({0.3,0.7,0.9,1},{0.2,0.2,0.2,1})
 end
 
 function love.load()
     if arg[1] then print(set.VER, set.APPNAME, 'Game (love2d)', arg[1]) end
     love.window.setFullscreen(set.FULLSCR, 'desktop')
     love.graphics.setBackgroundColor(set.BGCLR)
-    -- init
-    ui.init()
+
+    ui.load()
+
     uiScreen()
 end
 
@@ -193,7 +215,7 @@ function love.textinput(t) end
 function love.keypressed(key,unicode,isrepeat)
     if key=='escape' then love.event.quit() end
     if key=='space'then ui.LabelExe{x=set.MIDWID,y=0,text='UI',anchor='n'} end
-    if key=='lgui' then love.event.quit('restart') end
+    if key=='r' then love.event.quit('restart') end
 end
 function love.keyreleased(key,unicode) end
 function love.mousepressed(x,y,button,istouch) end
