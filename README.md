@@ -1,22 +1,12 @@
-# LOVUI-LÖVE
-
-UI elements for Love2d. ASCII-only.
+# Lovui
 
 v3.0
 
-- Add main color function
-
-- Highlight slider handle
-
-- Align (center left right top bottom)
-
-- Add self to List (use self in function calls)
-
-- Add unfold direction to FoldList
+UI elements for Love2d. ASCII-only.
 
 ![Screenshot](screenshot/screenshot1.png)
 
-Copy lovui.lua to the project folder.
+Copy lovui.lua to the project dir.
 
 Import module.
 
@@ -96,11 +86,11 @@ Look at advanced examples in main.lua.
 To run example: clone repository, download & install [LÖVE 11.1](https://love2d.org) for you system and run main.lua.
 
 
-# ui.load()
+## ui.load()
 
 ui.load() - connect lovui with love events system.
 
-# ui.Manager
+## ui.Manager
 
 ui.items - hold all UI elements.
 
@@ -152,17 +142,17 @@ ui.List - group of ui.Selectors with label.
 
 ui.FoldList - group of pop-up ui.Selectors with label.
 
-# Images
+## Images
 
 Use ImageData when provide images for UI elements.
 
-# Colors
+## Colors
 
 You can provide frame color (frmclr) and font color (fntclr) for UI elements. But values for font highlight color (onclr) and frame highlight color (onfrm), lovui count automatically.
 
 For example, if you choose fntclr={1,1,1,1} for ui.Button you get white font and same highlight color, but if you choose fntclr={0.3,0.3,0.3,1}, ui.Button text become brighter when mouse collide with element.
 
-# External variables
+## External variables
 
 Provide custom variables for field 'var' when setup UI elements.
 

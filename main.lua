@@ -1,15 +1,15 @@
 #!/usr/bin/env love
 -- UI
--- 2.5
+-- 3.0
 -- LOVUI (love2d)
 
 -- lua<5.3
+io.stdout:setvbuf('no')
 local unpack = table.unpack or unpack
 local utf8 = require('utf8')
 
 local ui = require('lovui')
 
-io.stdout:setvbuf('no')
 local set = {
     APPNAME = 'UI',
     VER = '3.0',

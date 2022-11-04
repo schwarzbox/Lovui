@@ -27,17 +27,18 @@
 
 -- 4.0
 -- Make handle pan (fold button) fof HBox VBox to drag item.
-
--- slider float
+-- Slider float negative
 -- Add drag event for ProgBar (semi transparent box with values)
 
 -- FoldList and List self.sel last added
 -- foldlist stop click when on top
 
--- Refactor Hbox remove function.
+-- Refactor Hbox remove function
+
 -- 4.5
 -- utf-8 support
 -- faster > 256 obj 60 fps
+
 
 -- use ImageData when provide images for UI elements
 
@@ -80,8 +81,10 @@ local function Class(Super, class)
 end
 
 function UI.load()
-    local events = {'keypressed','keyreleased','mousepressed',
-            'mousereleased','mousemoved','wheelmoved','update'}
+    local events = {
+        'keypressed', 'keyreleased', 'mousepressed',
+        'mousereleased','mousemoved','wheelmoved','update'
+    }
     -- add to love
     local default = {}
     for i=1,#events do
@@ -757,9 +760,12 @@ end
 function UI.Input:setFnt(fnt)
     self.Super.setFnt(self,fnt)
     UI.Manager.remove(self.cursor)
-    self.cursor=UI.Label{text='',fnt={fnt[1],fnt[2]-1},
-                        frmclr=self.onclr, frm=self.cursize,
-                        mode='fill', hide=true}
+    self.cursor=UI.Label{
+        text='',
+        fnt={fnt[1],fnt[2]-1}, frmclr=self.onclr, frm=self.cursize,
+        mode='fill',
+        hide=true
+    }
 end
 
 function UI.Input:clear(init)
@@ -1190,7 +1196,7 @@ function UI.Slider:setValue()
     if self.var.val+(newx-oldx)<self.min then return end
     self.var.val = self.var.val+(newx-oldx)
     -- fix mouse
-    love.mouse.setPosition(newx+halfbarwid,self.bar:get('y'))
+    -- love.mouse.setPosition(newx+halfbarwid,self.bar:get('y'))
     self.bar:set({x=newx})
 
     self:com()
@@ -1215,8 +1221,15 @@ function UI.Slider:update(dt)
 end
 
 
-UI.ProgBar = Class(UI.HBox,{text='',fnt=FNT,fntclr=FNTCLR,frmclr=FRMCLR,
-            frm=2,image=nil,barchar='|',barmode='fill',sep=4,min=0,max=16})
+UI.ProgBar = Class(UI.HBox,
+    {
+        text='',
+        fnt=FNT, fntclr=FNTCLR, frmclr=FRMCLR, frm=2,
+        image=nil,
+        barchar='|', barmode='fill',
+        sep=4, min=0, max=16
+    }
+)
 UI.ProgBar.type = 'progbar'
 function UI.ProgBar:new(o)
     self.deffrm = self.frmclr
@@ -1302,19 +1315,39 @@ function UI.ProgBar:update(dt)
 end
 
 
-UI.List = Class(UI.VBox,{text='',fnt=FNT,fntclr=FNTCLR,frmclr=FRMCLR,frm=2,
-                 com=function() end,image=nil,items={},sep=4,max=4,sel=1})
+UI.List = Class(
+    UI.VBox,
+    {
+        text='',
+        fnt=FNT, fntclr=FNTCLR, frmclr=FRMCLR, frm=2,
+        com=function() end,
+        image=nil,
+        items={},
+        sep=4,
+        max=4,
+        sel=1
+    }
+)
 UI.List.type = 'list'
 function UI.List:new(o)
     self.deffrm = self.frmclr
     self.var = self.var or {val=''}
     self.txt = nil
     if self.text and (#self.text>0 or self.image) then
-        self.txt = UI.Label{text=self.text,fnt=self.fnt,fntclr=self.fntclr,
-                            image=self.image}
+        self.txt = UI.Label{
+            text=self.text,
+            fnt=self.fnt,
+            fntclr=self.fntclr,
+            image=self.image
+        }
     end
 
-    self.border = UI.VBox{frm=self.frm, sep=2, frmclr=self.frmclr,mode=self.mode}
+    self.border = UI.VBox{
+        frm=self.frm,
+        sep=2,
+        frmclr=self.frmclr,
+        mode=self.mode
+    }
     -- set init size
     if #self.items>self.max then self.max = #self.items end
     if #self.items==0 and self.max~=0 then
@@ -1346,14 +1379,26 @@ function UI.List:add(...)
     local fargs = {...}
     for i=1,#fargs do
         if type(fargs[i])=='table' then
-            self.border:add(UI.Selector{text=fargs[i][1],fnt=self.fnt,
-                            fntclr=self.fntclr, var=self.var,
-                            com=function() self:com() end,
-                            image=fargs[i][2]})
+            self.border:add(
+                UI.Selector{
+                    text=fargs[i][1],
+                    fnt=self.fnt,
+                    fntclr=self.fntclr,
+                    var=self.var,
+                    com=function() self:com() end,
+                    image=fargs[i][2]
+                }
+            )
         else
-            self.border:add(UI.Selector{text=fargs[i], fnt=self.fnt,
-                            fntclr=self.fntclr, var=self.var,
-                            com=function() self:com() end})
+            self.border:add(
+                UI.Selector{
+                    text=fargs[i],
+                    fnt=self.fnt,
+                    fntclr=self.fntclr,
+                    var=self.var,
+                    com=function() self:com() end
+                }
+            )
         end
     end
 end
@@ -1411,8 +1456,17 @@ function UI.List:update(dt)
 end
 
 
-UI.FoldList = Class(UI.HBox,{text='',fnt=FNT,fntclr=FNTCLR,frmclr=FRMCLR,
-                       com=function() end,image=nil,items={},sel=1,side='nw'})
+UI.FoldList = Class(UI.HBox,
+    {
+        text='',
+        fnt=FNT, fntclr=FNTCLR, frmclr=FRMCLR,
+        com=function() end,
+        image=nil,
+        items={},
+        sel=1,
+        side='nw'
+    }
+)
 UI.FoldList.type = 'foldlist'
 function UI.FoldList:new(o)
     self.deffrm = self.frmclr
@@ -1423,8 +1477,12 @@ function UI.FoldList:new(o)
         self.items = {'Selector'}
     end
     if self.text and (#self.text>0 or self.image) then
-        self.txt = UI.Label{text=self.text,fnt=self.fnt,fntclr=self.fntclr,
-                            image=self.image}
+        self.txt = UI.Label{
+            text=self.text,
+            fnt=self.fnt,
+            fntclr=self.fntclr,
+            image=self.image
+        }
     end
 
     local maxlen = 0
@@ -1438,9 +1496,17 @@ function UI.FoldList:new(o)
         if len>maxlen then maxlen = len maxtext = text end
     end
 
-    self.display = UI.Button{text=maxtext, fnt=self.fnt, fntclr=self.fntclr,
-                    var=self.var, com=function() self:unfold() end,
-                    frm=2, frmclr=self.frmclr, mode=self.mode,corner={0,0,0}}
+    self.display = UI.Button{
+        text=maxtext,
+        fnt=self.fnt,
+        fntclr=self.fntclr,
+        var=self.var,
+        com=function() self:unfold() end,
+        frm=2,
+        frmclr=self.frmclr,
+        mode=self.mode,
+        corner={0,0,0}
+    }
 
     if self.sel>#self.items then self.sel = 1 end
     self:select(self.sel)
@@ -1506,15 +1572,23 @@ function UI.FoldList:unfold()
     local hei = self.display:get('hei')
     local frm = self.display:get('frm')
 
-    self.list = UI.List{x=self.display:get('rectx'),
+    self.list = UI.List{
+        x=self.display:get('rectx'),
         y=self.display:get('recty')+hei+frm*2,
-        anchor=self.side, fnt=self.fnt, fntclr=self.fntclr,
-        frm=2,  frmclr=self.frmclr, mode='fill',
-        var=self.var, com=function()
-            if self.display:get('text')~=self.var.val then self:fold() end
+        anchor=self.side,
+        fnt=self.fnt, fntclr=self.fntclr, frm=2, frmclr=self.frmclr,
+        mode='fill',
+        var=self.var,
+        com=function()
+            if self.display:get('text')~=self.var.val then
+                self:fold()
+            end
                 self.display:set({text=self.var.val})
             end,
-            items=self.folditems, max=0, sel=self:index(self.var.val)}
+        items=self.folditems,
+        max=0,
+        sel=self:index(self.var.val)
+    }
 
     UI.Manager.focus(false)
     local listitems = self.list:getItems()
