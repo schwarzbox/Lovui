@@ -1,38 +1,51 @@
 # Lovui
 
-v3.0
+## v3.0
 
-UI elements for Love2d. ASCII-only.
+UI elements for LÖVE. ASCII-only UI.
 
-![Screenshot](screenshot/screenshot1.png)
+![Screenshot](.media/screenshot1.png)
 
-Copy lovui.lua to the project dir.
+### Usage
 
-Import module.
+Install [LÖVE 11.5](https://love2d.org).
 
-``` lua
+Copy `lovui.lua` into the project.
+
+Call `ui.load()` from `love.load()` to connect Lovui with the LÖVE events system.
+
+#### Minimal Example
+
+`main.lua`
+```lua
 local ui = require('lovui')
-```
 
-"Hello World!".
+io.stdout:setvbuf('no')
 
-``` lua
-local ui = require('lovui')
 local MIDWID = love.graphics.getWidth() / 2
 local MIDHEI = love.graphics.getHeight() / 2
+
 function love.load()
-    -- connect lovui with love events system
+    -- connect Lovui with the LÖVE events system
     ui.load()
     ui.Manager.clear()
-    local lab = ui.Label{x=MIDWID, y=MIDHEI,anchor='s', text='Hello World!'}
-    ui.Button{x=MIDWID, y=MIDHEI, anchor='n', text=' OK ',
-                com=function(self) lab.text=self.text end}
+    local lab = ui.Label{
+        x=MIDWID, y=MIDHEI, anchor='s', text='Hello World!'
+    }
+    ui.Button{
+        x=MIDWID,
+        y=MIDHEI,
+        anchor='n',
+        text=' OK ',
+        com=function(self) lab.text=self.text end
+    }
 end
 
 function love.update(dt) ui.Manager.update(dt) end
 function love.draw() ui.Manager.draw() end
 
--- lovui need all this functions
+-- Lovui uses the LÖVE input events.
+-- Define all of these functions even if they are empty.
 function love.textinput(t) end
 function love.keypressed(key,unicode,isrepeat)end
 function love.keyreleased(key,unicode) end
@@ -42,26 +55,46 @@ function love.mousemoved(x,y,dx,dy,istouch) end
 function love.wheelmoved(x, y) end
 ```
 
-Example with ui.HBox ui.VBox and ui.Sep.
+#### Layout Example
 
-``` lua
+`main.lua`
+```lua
 local ui = require('lovui')
+
+io.stdout:setvbuf('no')
+
 -- variables for UI elements
 local countUI = {val=' '}
 local countFPS = {val=' '}
+
 function love.load()
     ui.load()
     ui.Manager.clear()
 
-    local menu = ui.VBox{x=love.graphics.getWidth() / 2,
-                        y=love.graphics.getHeight() / 2,frm=8,mode='fill'}
+    local menu = ui.VBox{
+        x=love.graphics.getWidth() / 2,
+        y=love.graphics.getHeight() / 2,
+        frm=8,
+        mode='fill'
+    }
     local left = ui.HBox()
     local right = ui.HBox()
-    left:add(ui.Label{text='UI  '},ui.Sep(),ui.Label{text='000',var=countUI})
-    right:add(ui.Label{text='FPS'},ui.Sep(),ui.Label{text='000',var=countFPS})
+    left:add(
+        ui.Label{text='UI  '},
+        ui.Sep(),
+        ui.Label{text='000', var=countUI}
+    )
+    right:add(
+        ui.Label{text='FPS'},
+        ui.Sep(),
+        ui.Label{text='000', var=countFPS}
+    )
 
-    menu:add(left,ui.Sep(),right,
-             ui.Button{text='Clear',com=function() ui.Manager.clear() end})
+    menu:add(
+        left, ui.Sep(), right, ui.Button{
+            text='Clear',com=function() ui.Manager.clear() end
+        }
+    )
 end
 
 function love.update(dt)
@@ -81,87 +114,101 @@ function love.mousemoved(x,y,dx,dy,istouch) end
 function love.wheelmoved(x, y) end
 ```
 
-Look at advanced examples in main.lua.
+#### Complete Example
 
-To run example: clone repository, download & install [LÖVE 11.1](https://love2d.org) for you system and run main.lua.
+Advanced project in the `example/` directory.
 
+### API Reference
 
-## ui.load()
+#### ui.load()
 
-ui.load() - connect lovui with love events system.
+`ui.load()` connects Lovui with the LÖVE events system.
 
-## ui.Manager
+Call it once from `love.load()` to connect Lovui with the LÖVE events system.
 
-ui.items - hold all UI elements.
+#### ui.Manager
 
-ui.Manager.add() - don't add items by yourself.
+`ui.Manager.items` - holds all UI elements.
 
-ui.Manager.clear() - remove all UI elements.
+`ui.Manager.add()` - adds a UI element to the manager. Usually UI elements add themselves automatically.
 
-ui.Manager.remove(item) - remove UI element.
+`ui.Manager.clear()` - removes all UI elements.
 
-ui.Manager.len() - count all UI elements
+`ui.Manager.remove(item)` - removes a UI element.
 
-ui.Manager.focus(bool) - set or remove focus for UI element.
+`ui.Manager.len()` - returns the number of UI elements.
 
-ui.Manager.draw()
+`ui.Manager.focus(bool)` - sets or removes focus for UI elements.
 
-ui.Manager.update(dt)
+`ui.Manager.draw()` - draws all UI elements.
 
-Usually your use ui.Manager.draw(), ui.Manager.update(dt) and ui.Manager.clear()
+`ui.Manager.update(dt)` - updates all UI elements.
 
-# UI elements
+Typical usage includes `ui.Manager.draw()`, `ui.Manager.update(dt)`, and `ui.Manager.clear()`.
 
-ui.HBox - horizontal container for group of UI elements, default transparent.
+#### UI elements
 
-ui.VBox - vertical container for group of UI elements, default transparent.
+`ui.HBox` - horizontal container for a group of UI elements, default transparent.
 
-ui.Sep - small dot without HBox and VBox. When add ui.Sep to ui.HBox or ui.VBox, ui.Sep become horizontal/vertical line.
+`ui.VBox` - vertical container for a group of UI elements, default transparent.
 
-ui.PopUp - vertical pop-up container for group of UI elements.
+`ui.Sep` - small separator without HBox and VBox. When added to `ui.HBox` or `ui.VBox`, `ui.Sep` becomes a horizontal or vertical line.
 
-ui.Label - simple text element, default transparent background without frame.
+`ui.PopUp` - vertical pop-up container for a group of UI elements.
 
-ui.Input - element for input ASCII-only text.
+`ui.Label` - simple text element, default transparent background without a frame.
 
-ui.CheckBox - true/false element.
+`ui.Input` - element for ASCII-only text input.
 
-ui.LabelExe - show label and run given function before disappear.
+`ui.CheckBox` - true/false element.
 
-ui.Button - press to run given function.
+`ui.LabelExe` - shows a label and runs a given function before disappearing.
 
-ui.Selector - aka 'radiobutton'.
+`ui.Button` - press to run a given function.
 
-ui.Counter - two ui.Buttons and ui.Label to count from min to max with given step.
+`ui.Selector` - aka "radiobutton".
 
-ui.Slider - drag handle to change variable value.
+`ui.Counter` - two `ui.Button`s and a `ui.Label` to count from `min` to `max` with a given `step`.
 
-ui.ProgBar - show variable value with rectangle bar or with ASCII.
+`ui.Slider` - drag handle to change a variable value.
 
-ui.List - group of ui.Selectors with label.
+`ui.ProgBar` - shows a variable value with a rectangle bar or ASCII characters.
 
-ui.FoldList - group of pop-up ui.Selectors with label.
+`ui.List` - group of `ui.Selector`s with a label.
 
-## Images
+`ui.FoldList` - group of pop-up `ui.Selector`s with a label.
 
-Use ImageData when provide images for UI elements.
+#### Images
 
-## Colors
+Use `ImageData` to provide images for UI elements.
 
-You can provide frame color (frmclr) and font color (fntclr) for UI elements. But values for font highlight color (onclr) and frame highlight color (onfrm), lovui count automatically.
+#### Colors
 
-For example, if you choose fntclr={1,1,1,1} for ui.Button you get white font and same highlight color, but if you choose fntclr={0.3,0.3,0.3,1}, ui.Button text become brighter when mouse collide with element.
+Frame color `frmclr` and font color `fntclr` can be provided for UI elements.
 
-## External variables
+Lovui automatically calculates the font highlight color `onclr` and frame highlight color `onfrm`.
 
-Provide custom variables for field 'var' when setup UI elements.
+For example, `fntclr={1,1,1,1}` for `ui.Button` produces white text and the same highlight color.
 
-ui.CheckBcox.
-``` lua
+With `fntclr={0.3,0.3,0.3,1}`, the `ui.Button` text becomes brighter when the mouse is over the element.
+
+#### External variables
+
+UI elements can use external variables through the `var` field.
+
+`ui.CheckBox` uses a table with a `bool` field.
+
+```lua
 local checkBoxVar = {bool=false}
 ```
-Other UI elements.
-``` lua
+
+Other UI elements that use `var` use a table with a `val` field.
+
+```lua
 local selectorVar = {val='Selector1'}
 ```
 
+### Credits
+
+Design/Art/Code: [Aliaksandr Veledzimovich](https://twitter.com/veledzimovich)
+Engine: [LÖVE](https://love2d.org/) [License](https://github.com/love2d/love/blob/main/license.txt)

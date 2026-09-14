@@ -1,32 +1,20 @@
 #!/usr/bin/env love
--- UI
+-- LOVUI
 -- 3.0
--- LOVUI (love2d)
+-- App (love2d)
+-- main.lua
 
--- lua<5.3
+-- Copyright (c) 2018 Aliaksandr Veledzimovich veledz@gmail.com
+-- SPDX-License-Identifier: MIT
+
 io.stdout:setvbuf('no')
+-- lua<5.3
 local unpack = table.unpack or unpack
 local utf8 = require('utf8')
 
-local ui = require('lovui')
+local ui = require('lib/lovui')
 
-local set = {
-    APPNAME = 'UI',
-    VER = '3.0',
-    FULLSCR = false,
-    WID = love.graphics.getWidth(),
-    HEI = love.graphics.getHeight(),
-    MIDWID = love.graphics.getWidth() / 2,
-    MIDHEI = love.graphics.getHeight() / 2,
-
-    WHITE = {1,1,1,1}, BLACK = {0,0,0,1},
-    RED = {1,0,0,1}, GREEN = {0,1,0,1}, BLUE = {0,0,1,1},
-    GRAY = {0.5,0.5,0.5,1}, DARKGRAY = {32/255,32/255,32/255,1},
-    MAINFNT = nil,
-}
-set.GAMEFNT = {set.MAINFNT,16}
-set.BGCLR = set.DARKGRAY
-set.TXTCLR = set.WHITE
+local set = require('app/set')
 
 local function resize(image_data, scale)
     scale = scale or 1
@@ -186,7 +174,12 @@ local function uiScreen()
 end
 
 function love.load()
-    if arg[1] then print(set.VER, set.APPNAME, 'Game (love2d)', arg[1]) end
+    if arg[1]
+        then print(set.VER, set.APPNAME, 'App (love2d)', arg[1])
+    end
+
+    love.window.setMode(set.WID,set.HEI)
+    -- love.window.setPosition(0,0)
     love.window.setFullscreen(set.FULLSCR, 'desktop')
     love.graphics.setBackgroundColor(set.BGCLR)
 
